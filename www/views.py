@@ -85,9 +85,15 @@ def sign_user(request):
         try:
             username = request.POST['login']
             password = request.POST['passw']
-            user = authenticate(request, username=username, password=password)
-            login(request, user)
-            return redirect("catalog")
+            users = User.objects.all()
+            user = None
+            for i in users:
+                if i.username == username and i.password == password:
+                    user = i
+            if user:
+                print(user.first_name)
+                login(request, user)
+                return redirect("catalog")
         except:
             error = True
             context = {'error': error}
